@@ -11,38 +11,32 @@ bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, 'Напишите название города')
+    bot.send_message(message.chat.id, 'Just send the name of the city, and get current weather! ')
 
 
 @bot.message_handler(content_types=['text'])
 def text(message):
-    place = message.text
-    config_dict = get_default_config()  # Инициализация get_default_config()
-    config_dict['language'] = 'ru'  # Установка языка
-    place = message.text  # Переменная для записи города
-    country = message.text  # Переменная для записи страны/кода страны
-    country_and_place = place + ", " + country  # Запись города и страны в одну переменную через запятую
-
-    owm = OWM('API TOKEN')  # Ваш ключ с сайта open weather map
-    mgr = owm.weather_manager()  # Инициализация owm.weather_manager()
-    observation = mgr.weather_at_place(country_and_place)
-    # Инициализация mgr.weather_at_place() И передача в качестве параметра туда страну и город
-
+    config_dict = get_default_config()
+    config_dict['language'] = 'eng'  # Language setting
+    place = message.text  # Variable to record the city
+    owm = OWM('1374cdbe6ac74415b62253caf8b3c67b')  # Your key from the open weather map site
+    mgr = owm.weather_manager()  # Initializing owm.weather_manager()
+    observation = mgr.weather_at_place(place)
+    # Initializing mgr.weather_at_place() And passing the country and city as a parameter there
     w = observation.weather
-
-    status = w.detailed_status  # Узнаём статус погоды в городе и записываем в переменную status
-    w.wind()  # Узнаем скорость ветра
-    humidity = w.humidity  # Узнаём Влажность и записываем её в переменную humidity
-    temp = w.temperature('celsius')['temp']  # Узнаём температуру в градусах по цельсию и записываем в переменную temp
+    status = w.detailed_status  # Find out the weather status in the city and write it to the status variable
+    humidity = w.humidity  # Find out the Humidity and write it to the humidity variable
+    temperature = w.temperature('celsius')['temp']  # Find out the temperature and write it to the temperature variable
 
     bot.send_message(message.chat.id,
-                     "В городе " + str(place) + " сейчас " + str(status) +  # Выводим город и статус погоды в нём
-                     "\nТемпература " + str(
+                     "In the city " + str(place) + " now " + str(status) +
+                     # We display the city and the status of the weather in it
+                     "\nTemperature is " + str(
                          round(
-                             temp)) + " градусов по цельсию" +  # Выводим температуру с округлением в ближайшую сторону
-                     "\nВлажность составляет " + str(humidity) + "%" +  # Выводим влажность в виде строки
-                     "\nСкорость ветра " + str(
-                         w.wind()['speed']) + " метров в секунду"  # Узнаём и выводим скорость ветра
+                             temperature)) + " degrees Celsius" +  # Displaying the temperature rounded to the nearest
+                     "\nHumidity is " + str(humidity) + "%" +  # Output humidity as a string
+                     "\nWind speed is " + str(
+                         w.wind()['speed']) + " meters per second"  # Finding and displaying wind speed
                      )
 
 
