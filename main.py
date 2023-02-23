@@ -28,16 +28,31 @@ def text(message):
     humidity = w.humidity  # Find out the Humidity and write it to the humidity variable
     temperature = w.temperature('celsius')['temp']  # Find out the temperature and write it to the temperature variable
 
-    bot.send_message(message.chat.id,
-                     "In the city " + str(place) + " now " + str(status) +
-                     # We display the city and the status of the weather in it
-                     "\nTemperature is " + str(
-                         round(
-                             temperature)) + " degrees Celsius" +  # Displaying the temperature rounded to the nearest
-                     "\nHumidity is " + str(humidity) + "%" +  # Output humidity as a string
-                     "\nWind speed is " + str(
-                         w.wind()['speed']) + " meters per second"  # Finding and displaying wind speed
-                     )
+    bot.send_message(
+        message.chat.id,
+        (
+            (
+                (
+                    (
+                        (
+                            (
+                                f"In the city {str(place)} now {str(status)}"
+                                + "\nTemperature is "
+                            )
+                            + str(round(temperature))
+                            + " degrees Celsius"
+                        )
+                        + "\nHumidity is "
+                    )
+                    + str(humidity)
+                    + "%"
+                )
+                + "\nWind speed is "
+            )
+            + str(w.wind()['speed'])
+            + " meters per second"
+        ),
+    )
 
 
 bot.infinity_polling()
